@@ -3,6 +3,7 @@ package com.myrestapi.controllers;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import com.myrestapi.objects.Genre;
 import com.myrestapi.objects.Response;
 import com.myrestapi.repos.BookRepo;
 
-@RestController("/book")
+@RestController
 public class BookController 
 {
 	static private Random RANDOM = new Random();
@@ -20,14 +21,20 @@ public class BookController
 	@Autowired
 	private BookRepo repo;
 	
-	@RequestMapping(value="/get")
-	private Book getBook(@RequestParam(value="id", defaultValue="-1") int id)
+	@RequestMapping(value="/book/get")
+	public Book getBook(@RequestParam(value="id", defaultValue="-1") int id)
 	{
 		return repo.findById(id);
 	}
 	
-	@RequestMapping(value="/put")
-	private Response getBook(@RequestParam(value="author", defaultValue="null") String author,
+	@RequestMapping(value="/book/{id}")
+	public Book getBookById(@PathVariable int id)
+	{
+		return repo.findById(id);
+	}
+	
+	@RequestMapping(value="/book/put")
+	public Response getBook(@RequestParam(value="author", defaultValue="null") String author,
 			@RequestParam(value="title", defaultValue="null") String title, @RequestParam(value="genre", defaultValue="null") String genre)
 	{
 		if ( author.equals("null") || title.equals("null") || genre.equals("null") )
